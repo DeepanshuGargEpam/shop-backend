@@ -30,6 +30,11 @@ export function formatJSONResponse<T>(response: Response<T>) {
 
   return {
     statusCode,
+    headers: {
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Origin': '*',
+    },
     body: body ? JSON.stringify(body) : null,
   };
 }

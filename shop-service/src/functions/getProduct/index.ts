@@ -7,7 +7,8 @@ export const getAllProduct = {
     {
       http: {
         method: 'get',
-        path: 'products',
+        path: 'getproducts',
+        cors: false,
         responseData: {
           200: {
             description: 'Successful operation',

@@ -1,10 +1,10 @@
-import { AvailableProduct } from '../models/products';
+// import { AvailableProduct } from '../models/products';
 
 /**
  * Mock data.
  * Provided by https://fakestoreapi.com/.
  */
-const data: AvailableProduct[] = [
+const data= [
   {
     id: '1',
     title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',

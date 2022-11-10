@@ -4,7 +4,7 @@ import {
   import { ProductServiceError } from '../../common';
 import {  formatJSONResponse } from '@libs/api-gateway';
   import { middyfy } from '@libs/lambda';
-  import ProductService from '../../db/productService';
+  import ProductServices from '../../db/productService';
   import StocksService from '../../db/stockService';
   
   const createProduct: ValidatedEventAPIGatewayProxyEvent<void> = async (event) => {
@@ -25,7 +25,7 @@ import {  formatJSONResponse } from '@libs/api-gateway';
           });
       }
   
-      const createdProductId = await ProductService.createProduct(data);
+      const createdProductId = await ProductServices.createProduct(data);
   
       const createdStock = await StocksService.createStock({
         product_id: createdProductId,

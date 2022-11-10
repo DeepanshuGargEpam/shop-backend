@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { getAllProduct,getProductById,createProduct } from './src/functions';
+import { getAllProduct,getProductById,createProduct,catalogBatchProcess } from './src/functions';
 
 const serverlessConfiguration: AWS = {
   service: 'shop-service',
@@ -49,10 +49,26 @@ const serverlessConfiguration: AWS = {
         Action: 'dynamodb:PutItem',
         Resource: { 'Fn::GetAtt': ['StocksTable', 'Arn'] },
       },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:*'],
+        Resource: [
+          {
+            'Fn::GetAtt': ['catalogItemsQueue', 'Arn'],
+          },
+        ],
+      },
+      {
+        Effect: 'Allow',
+        Action: ['sns:*'],
+        Resource: {
+          Ref: 'createProductTopic',
+        },
+      },
     ],
   },
   // import the function via paths
-  functions: {getAllProduct,getProductById,createProduct},
+  functions: {getAllProduct,getProductById,createProduct,catalogBatchProcess},
   resources: {
     Resources: {
       ProductsTable: {
@@ -96,6 +112,28 @@ const serverlessConfiguration: AWS = {
           ProvisionedThroughput: {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1,
+          },
+        },
+      },
+      catalogItemsQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue',
+        },
+      },
+      createProductTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'createProductTopic',
+        },
+      },
+      createProductSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'deepanshugarg879@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'createProductTopic',
           },
         },
       },

@@ -2,7 +2,7 @@ import { Product } from '../models/products';
 import { v4 } from 'uuid';
 import { dynamo } from './initData';
 
-class ProductService {
+class ProductServices {
   public async getProduct(): Promise<Product[]> {
     const result = (
       await dynamo
@@ -45,4 +45,4 @@ class ProductService {
   }
 }
 
-export default new ProductService();
+export default new ProductServices();

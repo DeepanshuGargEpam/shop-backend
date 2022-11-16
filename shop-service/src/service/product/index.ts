@@ -1,1 +1,1 @@
-export * from './ProductService';
+export { default as ProductService } from './ProductService';

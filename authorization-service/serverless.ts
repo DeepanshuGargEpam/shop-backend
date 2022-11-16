@@ -1,9 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
-import {importProductsFile,importFilesParser} from '@functions/index';
+import basicAuthorizer from '@functions/basicAuthorizer';
 
 const serverlessConfiguration: AWS = {
-  service: 'import-service',
+  service: 'authorization-service',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild'],
   provider: {
@@ -21,21 +21,6 @@ const serverlessConfiguration: AWS = {
       role: {
         statements: [
           {
-            Effect: 'Allow',
-            Action: 's3:ListBucket', // allow watch all bucket
-            Resource: 'arn:aws:s3:::image-uploaded',
-          },
-          {
-            Effect: 'Allow',
-            Action: 's3:*',
-            Resource: 'arn:aws:s3:::image-uploaded/*', // * - all operation PUT/GET/POST and etc
-          },
-          {
-            Effect: 'Allow',
-            Action: ['sqs:*'],
-            Resource: ['arn:aws:sqs:us-east-1:648820303910:catalogItemsQueue'],
-          },
-          {
             Effect: "Allow",
             Action: "lambda:InvokeFunction",
             Resource: "*",
@@ -44,9 +29,8 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  
   // import the function via paths
-  functions: { importProductsFile,importFilesParser },
+  functions: { basicAuthorizer },
   package: { individually: true },
   custom: {
     esbuild: {

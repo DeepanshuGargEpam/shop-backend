@@ -4,7 +4,7 @@ import { StatusCode } from '../common';
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, 'body'> & { body: FromSchema<S> }
 export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<ValidatedAPIGatewayProxyEvent<S>, APIGatewayProxyResult>
 
-
+export type EventHandler = Handler;
 export interface ResponseBody<T> {
   data?: T;
   error?: string;
@@ -20,9 +20,13 @@ export function formatJSONResponse<T>(response: Response<T>) {
   return {
     statusCode,
     headers: {
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Methods': '*',
-      'Access-Control-Allow-Origin': '*',
+      // 'Access-Control-Allow-Headers': '*',
+      // 'Access-Control-Allow-Methods': '*',
+      // 'Access-Control-Allow-Origin': '*',
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS, GET,PUT",
+      "Access-Control-Allow-Credentials": "true",
     },
     body: body ? JSON.stringify(body) : null,
   };
